@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import PropTypes from "prop-types";
+import { observable } from "mobx";
 
-function App() {
+class Store {
+  id = Math.random();
+  @observable cache = { queue: ['传输数据Store'] };
+  @observable finished = false;
+}
+// decorate(Store, {
+//   cache: observable,
+//   finished: observable
+// })
+let store = new Store();
+class Foo extends Component {
+  static propTypes = {
+    cache: PropTypes.object //ObservablePropTypes.observableObject //PropTypes.object
+  };
+
+  render () {
+    const cache = this.props.cache;
+    return (
+      <div>
+        <h2>{cache.queue}</h2>
+      </div>
+    );
+  }
+}
+function App () {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>react-app-mobx</h1>
+      <Foo cache={store.cache}>
+      </Foo>
     </div>
   );
 }
